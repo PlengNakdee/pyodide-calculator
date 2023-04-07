@@ -24,7 +24,29 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>Pyodide-Calculator</title>
+    <script src="'https://cdn.jsdelivr.net/pyodide/v0.23.0/full/pyodide.js"></script>
+    <script>
+    async function main() {
+      let pyodide = await loadPyodide();
+      console.log('Pyodide is ready to use!');
+
+      // Load and run the Python code
+      pyodide.globals.set("square", x => x*x)
+      return pyodide
+    }
+    pyodide = main();
+
+    const calculateButton = document.getElementById('calculate');
+    const numberInput = document.getElementById('number');
+    const resultElement = document.getElementById('result');
+
+    calculateButton.addEventListener('click', () => {
+      const number = parseInt(numberInput.value);
+      const result = pyodide.runPython('square('+number+')');
+      resultElement.textContent = `The square of ${number} is ${result}.`;
+    });
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
