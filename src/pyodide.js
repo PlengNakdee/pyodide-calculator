@@ -1,10 +1,7 @@
-async function main() {
-    let pyodide = await loadPyodide();
-
-      // Load and run the Python code
-    pyodide.globals.set("square", x => x*x)
-    return pyodide
-  };
-//   main();
-
-pyodide = main();
+export const runPyodide = async (code) => {
+    const pyodide = await window.loadPyodide({
+      indexURL : "https://cdn.jsdelivr.net/pyodide/v0.23.0/full/"
+    });
+  
+    return await pyodide.runPythonAsync(code);
+  }
